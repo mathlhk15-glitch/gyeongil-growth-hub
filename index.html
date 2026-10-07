@@ -37,6 +37,20 @@
 .howto[hidden]{display:none}
 .howto ol{margin:8px 0 0;padding-left:1.35em;display:grid;gap:7px}
 .howto b{color:var(--primary)}
+
+.easy-start{background:linear-gradient(180deg,#fffdf7,#fff);border:2px solid #ead7a1;border-radius:var(--r);padding:18px}
+.easy-start h2{margin-top:0}.easy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}
+.easy-card{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.easy-card h3{margin:0;font-size:1.05rem}.easy-card p{margin:0;color:var(--muted);font-size:.92rem}.easy-card .btn{margin-top:auto}
+.quality-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.quality-item{border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--surface);font-size:.86rem;line-height:1.4}
+.quality-item b{display:block;color:var(--primary);margin-bottom:2px}
+.extra-tools{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:0 16px}
+.extra-tools summary{cursor:pointer;font-weight:700;padding:14px 0}.extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px;padding:0 0 16px}
+.extra-link{display:block;border:1px solid var(--line);border-radius:9px;padding:11px 12px;text-decoration:none;color:var(--ink);background:var(--bg)}
+.extra-link b{display:block;margin-bottom:3px}.extra-link span{font-size:.82rem;color:var(--muted)}
+.admission-note{margin-top:10px;padding:11px 12px;border-radius:9px;background:var(--bg);font-size:.88rem;color:var(--muted)}
+@media(max-width:640px){.quality-strip{grid-template-columns:1fr 1fr}.quality-strip .quality-item:last-child{grid-column:1/-1}.easy-start{padding:14px}.easy-grid{grid-template-columns:1fr}}
 table.ver{border-collapse:collapse;font-size:.88rem;width:100%}
 table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
 .ver-wrap{overflow-x:auto}
@@ -73,11 +87,22 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
       </div>
       <p class="muted" style="margin:10px 0 0">길을 잃었나요? 어느 화면에서든 상단의 <b>🏠 허브</b>를 누르면 처음 화면으로 돌아올 수 있어요.</p>
     </div>
+    <div class="row no-print" style="margin-top:14px">
+      <a class="btn" href="starter.html">🚀 처음이에요 · 탐구 하나 완성하기</a>
+      <a class="btn quiet" href="notes.html">📓 하던 탐구 이어하기</a>
+    </div>
   </header>
 
   <section aria-labelledby="needs-h">
     <h2 id="needs-h" class="sr-only">필요한 것 고르기</h2>
     <div class="needs" id="needs"></div>
+  </section>
+
+  <section class="easy-start" id="easyStart" aria-labelledby="easy-h">
+    <span class="eyebrow">탐구가 처음이어도 괜찮아요</span>
+    <h2 id="easy-h">수업 1차시 안에 작은 탐구 하나를 끝내 보세요</h2>
+    <p class="muted"><b>고르기 → 조금 바꾸기 → 직접 확인하기 → 자기평가서 만들기</b> 순서로 안내합니다. 빈 종이에서 시작하지 않아도 됩니다.</p>
+    <div class="row"><a class="btn" href="starter.html">🚀 쉬운 탐구 완성 코스 시작</a><a class="btn quiet" href="seven-steps.html">좋은 탐구 7단계 먼저 보기</a></div>
   </section>
 
   <section id="labBox" hidden></section>
@@ -96,6 +121,18 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
     <div class="help-grid" id="helpGrid"></div>
   </section>
 
+  <section aria-labelledby="quality-h">
+    <h2 id="quality-h">좋은 탐구는 이 5가지만 기억해요</h2>
+    <p class="muted">대학 입시용 문장을 만드는 것이 아니라, <b>수업에서 실제로 배우고 생각한 과정</b>을 남기는 기준이에요.</p>
+    <div class="quality-strip">
+      <div class="quality-item"><b>① 수업에서 출발</b>배운 개념이나 수행평가에서 궁금한 점을 찾아요.</div>
+      <div class="quality-item"><b>② 질문과 방법 맞추기</b>비교 질문이면 비교, 원인 질문이면 원인을 확인할 방법을 골라요.</div>
+      <div class="quality-item"><b>③ 근거 남기기</b>자료·표·그래프·관찰·실험처럼 확인할 수 있는 근거를 남겨요.</div>
+      <div class="quality-item"><b>④ 틀리면 수정</b>예상과 다르면 실패가 아니라 이유를 찾고 방법을 바꿔요.</div>
+      <div class="quality-item"><b>⑤ 생각을 이어가기</b>처음 생각이 어떻게 바뀌었는지와 다음 질문을 남겨요.</div>
+    </div>
+  </section>
+
   <section aria-labelledby="cycle-h">
     <h2 id="cycle-h">탐구는 한 바퀴 돌고 다시 시작해요</h2>
     <ol class="cycle" id="cycle"></ol>
@@ -106,11 +143,26 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
     </div>
   </section>
 
+  <section aria-labelledby="extra-h">
+    <h2 id="extra-h">더 도움이 필요하면</h2>
+    <details class="extra-tools">
+      <summary>내 상황에 맞는 전문 도구 더 보기</summary>
+      <div class="extra-grid">
+        <a class="extra-link" href="https://chatgpt.com/g/g-69d4bd3bbe808191924ff384d664273b-cangweongyeongilgo-jilmun-tamgu-juje-doumi" target="_blank" rel="noopener"><b>💡 수업 후 질문·탐구 주제 도우미</b><span>수업은 들었는데 질문이 잘 떠오르지 않을 때</span></a>
+        <a class="extra-link" href="https://mathlhk15-glitch.github.io/arts-inquiry-guide/"><b>🎨 예체능 탐구 가이드</b><span>미술·음악·체육 활동을 탐구로 연결할 때</span></a>
+        <a class="extra-link" href="https://park-sanggeun-all.github.io/teacher-console-map/"><b>🗺️ 모두의 학과별 탐구 지도</b><span>관심 학과의 탐구 주제와 방향을 더 폭넓게 보고 싶을 때</span></a>
+        <a class="extra-link" href="https://mathlhk15-glitch.github.io/2026-1-hakup-design"><b>🧩 선택과목 도우미</b><span>관심 분야와 학교 과목 선택을 연결하고 싶을 때</span></a>
+        <a class="extra-link" href="https://mathlhk15-glitch.github.io/study-record-guide/"><b>📘 공부법 × 생기부 실천 가이드</b><span>수업·공부·학교생활을 실제 기록으로 이어가고 싶을 때</span></a>
+        <a class="extra-link" href="https://mathlhk15-glitch.github.io/grade5-compass/"><b>🎓 경일 내신·학과 진학 나침반 2028</b><span>현재 내신과 관심 학과를 함께 보며 진학 방향을 점검할 때</span></a>
+      </div>
+      <div class="admission-note"><b>대입 연결 원칙:</b> 성적을 탐구활동이 대신하지는 않아요. 적절한 과목을 선택하고 수업에 충실히 참여한 뒤, 그 수업에서 질문하고 근거를 확인하고 생각을 발전시키는 과정이 중요해요.</div>
+    </details>
+  </section>
+
   <footer class="foot">
     <p>🔒 탐구노트는 서버로 보내지 않고 지금 쓰는 브라우저에만 저장돼요. 다른 기기에서 이어 쓰려면 내 탐구노트에서 <b>내 탐구노트 저장하기</b>로 파일을 만들어 옮기세요. 이름·학번·연락처는 적지 마세요.</p>
     <div class="row no-print"><span id="modeText"></span><button class="btn quiet" type="button" id="modeBtn"></button></div>
-    <div id="teacherBox" hidden></div>
-    <p>경일 진로·탐구 성장 허브 v1.2 · 공통 기준 <span id="kisVer"></span> · 창원경일고</p>
+    <p>경일 진로·탐구 성장 허브 v1.4 · 공통 기준 <span id="kisVer"></span> · 창원경일고</p>
   </footer>
 </div>
 
@@ -126,11 +178,12 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
   var howtoBtn=document.getElementById('howtoBtn'), howtoBox=document.getElementById('howtoBox');
   if(howtoBtn&&howtoBox){howtoBtn.addEventListener('click',function(){var open=howtoBox.hidden;howtoBox.hidden=!open;howtoBtn.setAttribute('aria-expanded',open?'true':'false');howtoBtn.textContent=open?'사용법 닫기':'❓ 처음인가요? 사용법 보기';});}
 
+
   var needs=[
     {ico:'🌱',t:'뭘 좋아하는지 잘 모르겠어요',d:'경험에서 내가 좋아하는 행동을 찾고, 진로 가설과 작은 실험을 세워요.',where:'진로 실험실',href:S.lab+'index.html',go:'나를 알아보기'},
     {ico:'🧭',t:'관심 분야로 탐구하고 싶어요',d:'관련 과목과 탐구 주제를 찾고, 예시 질문과 방법을 보면서 내 탐구를 설계해요.',where:'진로 탐구 길잡이',href:S.explore+'index.html',go:'탐구 설계 시작하기',alt:{href:'notes.html?new=1',t:'바로 탐구노트 쓰기'}},
     {ico:'🛟',t:'탐구하다 막혔어요',d:'질문이 너무 쉬울 때, 자료를 믿어도 될지, 설문·상관관계·실패·협업·AI 사용이 헷갈릴 때.',where:'탐구 도움서',href:'#help',go:'막힌 곳 고르기'},
-    {ico:'🌳',t:'활동을 마쳤어요',d:'무엇이 달라졌는지 정리하고, 다음 학년 계획과 선생님께 보여드릴 활동 요약을 만들어요.',where:'진로 실험실 성장 로드맵 · 내 탐구노트',href:S.lab+'roadmap.html',go:'성장 돌아보기',alt:{href:'notes.html',t:'활동 요약 만들기'}}
+    {ico:'🌳',t:'활동을 마쳤어요',d:'무엇을 했고 무엇이 달라졌는지 정리한 뒤, 제출할 자기평가서를 만들어요.',where:'내 탐구노트 · 진로 실험실 성장 로드맵',href:'notes.html?tab=summary',go:'자기평가서 만들기',alt:{href:S.lab+'roadmap.html',t:'성장 돌아보기'}}
   ];
   document.getElementById('needs').innerHTML=needs.map(function(n){
     return '<article class="need"><span class="ico" aria-hidden="true">'+n.ico+'</span><h3>'+esc(n.t)+'</h3><p class="muted">'+esc(n.d)+'</p>'+
@@ -142,7 +195,7 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
     return '<a href="'+S.guide+'#'+h.id+'">'+esc(h.label)+'</a>';
   }).join('');
 
-  var cyc=[['발견','진로 실험실'],['설계','진로 탐구 길잡이'],['실행','내 탐구노트'],['점검','탐구 도움서'],['성장','진로 실험실']];
+  var cyc=[['발견','나의 관심'],['설계','질문과 방법'],['실행','직접 확인'],['점검','근거와 수정'],['정리','자기평가서']];
   document.getElementById('cycle').innerHTML=cyc.map(function(c,i){
     return '<li><span class="step"><b>'+c[0]+'</b><span>'+c[1]+'</span></span>'+(i<cyc.length-1?'<span class="arrow" aria-hidden="true">→</span>':'')+'</li>';
   }).join('')+'<li class="back"><span class="arrow" aria-hidden="true">↻</span><span class="step"><b>다시 설계</b><span>다음 질문으로</span></span></li>';
@@ -175,16 +228,6 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
   }
   document.getElementById('modeBtn').addEventListener('click',function(){N.setMode(N.mode()==='public'?'private':'public');renderMode();renderCurrent();renderLab();});
 
-  /* 교사용: 네 저장소의 공통 파일 버전이 같은지 확인 (?teacher=1) */
-  if(new URLSearchParams(location.search).get('teacher')==='1'){
-    var tb=document.getElementById('teacherBox'); tb.hidden=false;
-    tb.innerHTML='<h3>교사용 · 공통 파일 버전 점검</h3><div class="ver-wrap"><table class="ver"><thead><tr><th>저장소</th><th>공통 기준</th><th>탐구노트</th></tr></thead><tbody id="verBody"></tbody></table></div>';
-    var repos=[['허브',''],['진로 실험실',S.lab],['진로 탐구 길잡이',S.explore],['탐구 도움서',S.guide]];
-    function first(url){return fetch(url,{cache:'no-store'}).then(function(r){return r.ok?r.text():'';}).then(function(t){var m=t.match(/VERSION\s+([\d.]+)/);return m?m[1]:'없음';}).catch(function(){return '열 수 없음';});}
-    Promise.all(repos.map(function(r){return Promise.all([first(r[1]+'inquiry-standard.js'),first(r[1]+'inquiry-notes.js')]);})).then(function(rs){
-      document.getElementById('verBody').innerHTML=rs.map(function(v,i){var bad=v[0]!==K.VERSION;return '<tr><td>'+repos[i][0]+'</td><td>'+(bad?'⚠ ':'')+esc(v[0])+'</td><td>'+esc(v[1])+'</td></tr>';}).join('');
-    });
-  }
 
   renderCurrent(); renderLab(); renderMode();
   N.onChange(function(){renderCurrent();renderLab();});

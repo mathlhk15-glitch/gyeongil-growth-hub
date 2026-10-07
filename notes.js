@@ -1,9 +1,9 @@
-/* 내 탐구노트 편집 화면 v1.0 — gyeongil-growth-hub */
+/* 내 탐구노트 편집 화면 v1.2 — gyeongil-growth-hub */
 (function () {
   'use strict';
   var K = window.KIS, N = window.KNotes, esc = K.esc, S = K.SITES;
   var ed = document.getElementById('editor');
-  var st = { note: null, rev: null, tab: 'start', timer: null, conflict: null, delArmed: false };
+  var st = { note: null, rev: null, tab: 'start', timer: null, conflict: null, delArmed: false, wantedTab: '' };
 
   K.mountNav('notes');
   N.migrate();
@@ -30,7 +30,7 @@
     var n = N.get(id);
     if (!n) { renderEmpty(); return; }
     st.note = n; st.rev = n.rev; st.conflict = null; st.delArmed = false;
-    st.tab = n.stage === 'start' ? 'start' : n.stage === 'doing' ? 'doing' : 'done';
+    st.tab = st.wantedTab || (n.stage === 'start' ? 'start' : n.stage === 'doing' ? 'doing' : 'done'); st.wantedTab = '';
     N.setActive(n.id);
     if (location.hash.slice(1) !== n.id) history.replaceState(null, '', 'notes.html#' + encodeURIComponent(n.id));
     renderList(); renderEditor();
@@ -96,6 +96,37 @@
     }).join('') + '</p>';
   }
 
+  function questionCoach(n) {
+    var q = String(n.question || '').trim(), tips = [];
+    if (!q) return '<div class="notice"><b>💡 탐구 코치</b><p class="small">질문을 한 문장 적으면 바로 다음 행동을 안내해 드려요.</p></div>';
+    if (q.length < 10) tips.push('질문을 조금만 더 구체적으로 써 보세요. 대상과 비교 기준을 하나 넣으면 좋아요.');
+    if (/무엇인가|뜻은|장점은|종류는/.test(q)) tips.push('검색으로 바로 끝날 수 있어요. “왜?”, “어떻게?”, “무엇과 어떻게 다른가?” 중 하나로 한 단계 깊게 바꿔 보세요.');
+    if (/바람직한가|옳은가|좋은가|나쁜가/.test(q)) tips.push('좋다·나쁘다보다 확인 가능한 질문이 좋아요. “어떻게 달라지는가?” 또는 “왜 차이가 나는가?”처럼 바꿔 보세요.');
+    if (/청소년|사람들|모든 학생|학생들은/.test(q)) tips.push('범위가 너무 넓을 수 있어요. “우리 반”, “우리 학교 2학년”, “이번에 조사한 대상”처럼 실제 확인 가능한 범위로 좁혀 보세요.');
+    var chk = K.methodCheck(n.questionType, n.method); if (chk && chk.level === 'warn') tips.push(chk.text);
+    if (!tips.length && n.questionType && n.method) tips.push('질문과 방법이 잘 연결되어 있어요. 이제 실제 근거를 하나 남겨 보세요.');
+    if (!tips.length) tips.push('좋아요. “무엇을 직접 확인할지” 방법 하나를 고르면 탐구가 시작됩니다.');
+    return '<div class="notice"><b>💡 탐구 코치</b><p class="small">' + esc(tips[0]) + '</p></div>';
+  }
+
+  function coachingReport(n) {
+    var good=[], improve=[];
+    if (n.question && n.method) good.push('질문과 확인 방법을 정했어요.');
+    if (n.evidence.some(function(e){return e.title;})) good.push('확인한 근거를 남겼어요.');
+    if (n.role) good.push('내가 직접 한 일을 구분해서 적었어요.');
+    if (n.revision || (n.problem && n.limits)) good.push('예상과 다른 점이나 한계를 숨기지 않고 점검했어요.');
+    if (n.change.after) good.push('처음 생각과 달라진 판단을 설명했어요.');
+    if (!n.evidence.some(function(e){return e.title;})) improve.push('자료·관찰·표·그래프 중 하나라도 실제 근거를 적어 보세요.');
+    if (!n.role) improve.push('“조사했다”보다 내가 직접 비교·계산·관찰·수정한 행동을 한 문장 적어 보세요.');
+    if (!n.change.after) improve.push('“재미있었다”보다 근거를 확인한 뒤 생각이 어떻게 달라졌는지 적어 보세요.');
+    if (!n.next) improve.push('이번에 확인하지 못한 점을 다음 질문으로 한 가지 남겨 보세요.');
+    var next = improve[0] || '자기평가서를 읽어 보고 사실과 근거가 정확한지 마지막으로 확인하세요.';
+    return '<div class="card"><h3>🧭 탐구 코칭 리포트</h3><p class="small muted">점수나 합격 가능성을 매기는 것이 아니라, 지금 탐구를 한 단계 더 좋게 만드는 조언입니다.</p>'+
+      '<p><b>잘한 점</b></p><ul>'+ (good.length?good.slice(0,3):['탐구를 시작하고 끝까지 정리하려고 한 점이 좋습니다.']).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+
+      '<p><b>보완하면 좋은 점</b></p><ul>'+ (improve.length?improve.slice(0,2):['큰 누락 없이 잘 정리했어요.']).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+
+      '<p><b>지금 할 일 1개</b><br>'+esc(next)+'</p></div>';
+  }
+
   function paneStart() {
     var n = st.note, from = K.START_FROM.filter(function (x) { return x.id === n.start.from; })[0];
     var lab = N.labBridge();
@@ -110,7 +141,7 @@
     var news = '';
     if (n.start.from === 'news') news = S.oneQuestion ? '<a href="' + S.oneQuestion + '">📰 ONE QUESTION에서 뉴스 질문 고르기 →</a>' : '<p class="small muted">📰 ONE QUESTION 연결은 준비 중이에요.</p>';
     return '' +
-      field('question', '탐구 질문', '가장 먼저 이것만 써도 됩니다.', true, '예: 전압 변화에 따라 모터의 회전속도는 어떻게 달라질까?') +
+      field('question', '탐구 질문', '가장 먼저 이것만 써도 됩니다.', true, '예: 전압 변화에 따라 모터의 회전속도는 어떻게 달라질까?') + '<div id="liveCoach">' + questionCoach(n) + '</div>' +
       '<div class="f"><span class="lab">무엇이 알고 싶나요?</span><p class="hint">하나를 고르면 질문에 어울리는 방법을 앞에 보여 줘요.</p>' +
         choices('qtype', K.QUESTION_TYPES.map(function (x) { return { id: x.id, html: esc(x.ask) }; }), n.questionType) + '</div>' +
       '<div class="f"><span class="lab">어떤 방법으로 확인할까요?</span>' +
@@ -197,17 +228,18 @@
   }
 
   function paneSummary() {
-    return '<div class="notice">' + esc(K.SUMMARY_NOTICE) + '</div>' +
+    return '<div class="notice"><b>📄 제출용 자기평가서</b><p class="small">' + esc(K.SUMMARY_NOTICE) + '</p></div>' +
+      coachingReport(st.note) +
       '<pre class="sum" id="sumText">' + esc(N.summary(st.note)) + '</pre>' +
-      '<div class="row no-print"><button class="btn" type="button" data-act="copySum">요약 복사</button><button class="btn quiet" type="button" data-act="print">인쇄 / PDF 저장</button>' +
-      '<a class="btn quiet" href="' + S.lab + 'roadmap.html">성장 로드맵에 이어 쓰기</a></div>' +
+      '<div class="row no-print"><button class="btn" type="button" data-act="copySum">자기평가서 복사</button><button class="btn quiet" type="button" data-act="downloadSum">TXT 저장</button><button class="btn quiet" type="button" data-act="print">인쇄 / PDF 저장</button>' +
+      '<button class="btn quiet" type="button" data-act="followup">다음 질문으로 새 탐구 시작</button></div>' +
       '<p class="small muted" id="copyMsg" role="status"></p>' +
       '<div class="row no-print" style="margin-top:24px"><button class="btn danger" type="button" data-act="del">' + (st.delArmed ? '한 번 더 누르면 이 노트를 지워요' : '이 탐구노트 지우기') + '</button></div>';
   }
 
   function renderEditor() {
     var n = st.note;
-    var tabs = [['start', '시작할 때'], ['doing', '활동 중'], ['done', '마친 뒤'], ['summary', '활동 요약']];
+    var tabs = [['start', '시작할 때'], ['doing', '활동 중'], ['done', '마친 뒤'], ['summary', '자기평가서']];
     var body = st.tab === 'start' ? paneStart() : st.tab === 'doing' ? paneDoing() : st.tab === 'done' ? paneDone() : paneSummary();
     ed.innerHTML = '<div class="ehead">' +
       '<input class="title" type="text" data-f="title" value="' + esc(n.title) + '" placeholder="' + esc(N.title(n)) + '" aria-label="탐구 제목">' +
@@ -223,6 +255,10 @@
   }
   function restoreDetailKeys(keys) {
     (keys || []).forEach(function (k) { var d = ed.querySelector('details[data-keep="' + k + '"]'); if (d) d.open = true; });
+  }
+  function refreshCoach() {
+    var old = document.getElementById('liveCoach');
+    if (old && st.note) old.outerHTML = '<div id="liveCoach">' + questionCoach(st.note) + '</div>';
   }
   function refreshHealth() {
     var box = document.getElementById('healthBox');
@@ -242,7 +278,7 @@
     if (t.hasAttribute('data-f')) {
       setPath(n, t.getAttribute('data-f'), t.type === 'checkbox' ? t.checked : t.value);
       if (t.getAttribute('data-f') === 'ai.used') { schedule(); rerender(); return; }
-      schedule(); refreshHealth();
+      schedule(); refreshHealth(); if (t.getAttribute('data-f') === 'question') refreshCoach();
     } else if (t.hasAttribute('data-ev')) {
       var p = t.getAttribute('data-ev').split('.'); n.evidence[+p[0]][p[1]] = t.value; schedule(); refreshHealth();
     }
@@ -273,6 +309,10 @@
       case 'takeLatest': st.note = N.get(n.id); st.rev = st.note.rev; st.conflict = null; clearTimeout(st.timer); st.timer = null; rerender(); setStatus('최신 내용을 불러왔어요'); return;
       case 'keepMine': saveNow(true); return;
       case 'copySum': copy(N.summary(n)); return;
+      case 'downloadSum': downloadSummary(n); return;
+      case 'followup':
+        if (!n.next) { var cm=document.getElementById('copyMsg'); if(cm) cm.textContent='먼저 “다음 질문”을 한 가지 적어 주세요.'; return; }
+        var nn=N.create({title:'후속 탐구 · '+n.next.slice(0,40),start:{from:n.start.from,text:'이전 탐구에서 남은 질문에서 이어짐'},interest:n.interest,field:n.field,subject:n.subject,concept:n.concept,topic:n.topic,question:n.next,stage:'start'},'followup'); N.setActive(nn.id); location.href='notes.html#'+encodeURIComponent(nn.id); return;
       case 'print': window.print(); return;
       case 'del':
         if (!st.delArmed) { st.delArmed = true; rerender(); setTimeout(function () { if (st.delArmed) { st.delArmed = false; if (st.tab === 'summary') rerender(); } }, 4000); return; }
@@ -283,9 +323,17 @@
     schedule(); rerender();
   });
 
+  function downloadSummary(n) {
+    var blob = new Blob([N.summary(n)], {type:'text/plain;charset=utf-8'}), url = URL.createObjectURL(blob), a = document.createElement('a');
+    var d = new Date(), p = function(x){return String(x).padStart(2,'0');};
+    a.href = url; a.download = '탐구활동_자기평가서_' + d.getFullYear() + p(d.getMonth()+1) + p(d.getDate()) + '.txt';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},500);
+    var msg=document.getElementById('copyMsg'); if(msg) msg.textContent='자기평가서 TXT 파일을 저장했어요.';
+  }
+
   function copy(text) {
     var msg = document.getElementById('copyMsg');
-    function fb() { var pre = document.getElementById('sumText'); var r = document.createRange(); r.selectNodeContents(pre); var s = getSelection(); s.removeAllRanges(); s.addRange(r); if (msg) msg.textContent = '요약을 선택해 두었어요. 복사(Ctrl+C)하세요.'; }
+    function fb() { var pre = document.getElementById('sumText'); var r = document.createRange(); r.selectNodeContents(pre); var s = getSelection(); s.removeAllRanges(); s.addRange(r); if (msg) msg.textContent = '자기평가서를 선택해 두었어요. 복사(Ctrl+C)하세요.'; }
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { if (msg) msg.textContent = '복사했어요.'; }, fb); else fb();
   }
 
@@ -316,7 +364,7 @@
 
   /* ---------- 시작 ---------- */
   function start() {
-    var q = new URLSearchParams(location.search);
+    var q = new URLSearchParams(location.search); st.wantedTab = q.get('tab') === 'summary' ? 'summary' : '';
     if (q.get('new') === '1') {
       var existing = N.list().filter(function (x) { return N.isBlank(x); })[0];
       var n = existing || N.create({}, 'hub');

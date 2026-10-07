@@ -1,4 +1,4 @@
-/* INQUIRY STANDARD VERSION 1.2
+/* INQUIRY STANDARD VERSION 1.4
  * 경일 진로·탐구 성장 시스템 — 공통 탐구 기준
  * 원본: gyeongil-growth-hub/inquiry-standard.js
  * 복사본: career-lab / career-exploration-tool / seteuk-guide 저장소 루트
@@ -6,7 +6,7 @@
  */
 (function () {
   'use strict';
-  var VERSION = '1.2';
+  var VERSION = '1.4';
 
   /* 배포용 GitHub Pages 절대 주소: 저장소 간 이동 시 상대경로 404를 막습니다. */
   var SITES = {
@@ -14,16 +14,14 @@
     lab: 'https://mathlhk15-glitch.github.io/career-lab/',
     explore: 'https://mathlhk15-glitch.github.io/career-exploration-tool/',
     guide: 'https://mathlhk15-glitch.github.io/seteuk-guide/',
-    oneQuestion: '' // ONE QUESTION 웹 주소가 정해지면 여기에 넣습니다. 비어 있으면 '준비 중'으로 표시합니다.
+    oneQuestion: 'https://chatgpt.com/g/g-6982a6ea81fc8191b3e8975858800ba6-sinmungisaro-tamguhwaldong-saengseong' // 뉴스에서 질문을 시작할 때 사용하는 도구
   };
 
-  /* 공통 상단 메뉴 */
+  /* 공통 상단 메뉴: 학생에게는 사이트 이름보다 '무엇을 할지'만 보이게 단순화합니다. */
   var NAV = [
-    { id: 'discover', icon: '🌱', label: '나 발견', href: SITES.lab + 'index.html' },
-    { id: 'topic', icon: '🧭', label: '주제·탐구', href: SITES.explore + 'index.html' },
-    { id: 'help', icon: '🛟', label: '도움', href: SITES.hub + 'index.html#help' },
-    { id: 'growth', icon: '🌳', label: '성장', href: SITES.lab + 'roadmap.html' },
-    { id: 'notes', icon: '📓', label: '내 노트', href: SITES.hub + 'notes.html' }
+    { id: 'start', icon: '🚀', label: '탐구하기', href: SITES.hub + 'starter.html' },
+    { id: 'notes', icon: '📓', label: '내 노트', href: SITES.hub + 'notes.html' },
+    { id: 'help', icon: '🛟', label: '도움', href: SITES.hub + 'index.html#help' }
   ];
 
   /* 탐구는 어디서 시작됐나요? */
@@ -140,7 +138,7 @@
     { id: 'reflection', label: '생각의 변화를 쓰고 싶어요' }
   ];
 
-  var SUMMARY_NOTICE = '이 자료는 학생 활동 자기정리 자료이며 학교생활기록부 문장이 아닙니다. 선생님은 직접 관찰한 내용과 결과물 확인을 바탕으로 기록합니다.';
+  var SUMMARY_NOTICE = '이 자기평가서는 내가 실제로 한 활동과 생각의 변화를 정리한 자료입니다. 학교생활기록부 문장을 대신 쓰는 자료가 아니며, 사실과 근거를 정확하게 적어 제출하세요.';
 
   /* 사이트별 방법 이름 ↔ 공통 방법 */
   var MAP = {

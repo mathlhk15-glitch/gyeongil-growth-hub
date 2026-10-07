@@ -1,4 +1,4 @@
-/* INQUIRY NOTES VERSION 1.1 (schemaVersion 1)
+/* INQUIRY NOTES VERSION 1.2 (schemaVersion 1)
  * 경일 진로·탐구 성장 시스템 — 공통 탐구노트 저장소
  * 원본: gyeongil-growth-hub/inquiry-notes.js · 복사본: 세 저장소 루트
  * 네 사이트가 같은 github.io 주소(origin)를 쓰므로 같은 브라우저 저장 공간을 공유합니다.
@@ -253,29 +253,46 @@
     var m = K.METHODS && K.METHODS[n.method];
     var from = (K.START_FROM || []).filter(function (x) { return x.id === n.start.from; })[0];
     var L = [];
-    L.push('[선생님께 보여드릴 활동 요약] ' + title(n));
+    L.push('[탐구활동 자기평가서] ' + title(n));
     L.push('');
-    L.push('출발: ' + [from ? from.label : '', n.start.text].filter(Boolean).join(' — '));
-    if (n.interest) L.push('관심 분야: ' + n.interest);
-    L.push('교과·개념: ' + [n.subject, n.concept].filter(Boolean).join(' / '));
-    L.push('질문: ' + n.question);
+    L.push('1. 활동을 시작한 이유');
+    L.push([from ? from.label : '', n.start.text, n.interest ? '관심 분야: ' + n.interest : ''].filter(Boolean).join(' — '));
+    L.push('');
+    L.push('2. 수업·교과와의 연결');
+    L.push([n.subject, n.concept].filter(Boolean).join(' / ') || '(해당하면 작성)');
+    L.push('');
+    L.push('3. 내가 확인하려고 한 질문');
+    L.push(n.question || '(아직 작성하지 않음)');
     if (lv) L.push('질문 수준: ' + lv.n + '단계 ' + lv.name);
-    L.push('방법: ' + [qt ? qt.ask : '', m ? m.name : ''].filter(Boolean).join(' → ') + (n.methodWhy ? ' (' + n.methodWhy + ')' : ''));
-    L.push('근거:');
-    if (n.evidence.length) n.evidence.forEach(function (e, i) {
-      L.push('  ' + (i + 1) + ') ' + e.title + [e.who && '만든 곳 ' + e.who, e.when && '시기 ' + e.when, e.target && '대상 ' + e.target, e.how && '방법 ' + e.how].filter(Boolean).map(function (x) { return ' · ' + x; }).join(''));
-      if (e.differs) L.push('     다른 자료와 차이: ' + e.differs);
-    }); else L.push('  (아직 없음)');
-    L.push('내가 직접 한 일: ' + n.role);
-    L.push('예상과 다른 점: ' + n.problem);
-    L.push('수정한 것: ' + n.revision);
-    L.push('결과·결과물: ' + [n.result, n.outputs.join(', ')].filter(Boolean).join(' / '));
+    L.push('');
+    L.push('4. 내가 사용한 방법과 근거');
+    L.push([qt ? qt.ask : '', m ? m.name : '', n.methodWhy].filter(Boolean).join(' · ') || '(아직 작성하지 않음)');
+    if (n.evidence.length) n.evidence.forEach(function (e, i) { if (e.title) L.push('근거 ' + (i + 1) + ': ' + e.title); });
+    else L.push('근거: (아직 작성하지 않음)');
+    L.push('');
+    L.push('5. 내가 직접 한 일');
+    L.push(n.role || '(아직 작성하지 않음)');
+    L.push('');
+    L.push('6. 예상과 달랐던 점과 수정');
+    L.push('예상과 달랐던 점: ' + (n.problem || '없거나 아직 작성하지 않음'));
+    L.push('수정·보완한 점: ' + (n.revision || '없거나 아직 작성하지 않음'));
+    L.push('');
+    L.push('7. 결과와 결과물');
+    L.push([n.result, n.outputs.join(', ')].filter(Boolean).join(' / ') || '(아직 작성하지 않음)');
     if (n.limits) L.push('한계: ' + n.limits);
-    var sc = []; if (n.scope.sample) sc.push('조사 범위만큼 결론을 썼어요'); if (n.scope.causal) sc.push('관련성과 원인을 구분했어요');
-    if (sc.length) L.push('결론 점검: ' + sc.join(', '));
-    L.push('판단 변화: ' + ['처음 생각 ' + n.change.before, '확인한 근거 ' + n.change.evidence, '바뀐 판단 ' + n.change.after].filter(function (x) { return !/ $/.test(x); }).join(' → '));
-    L.push('다음 질문: ' + n.next);
-    if (n.ai.used) L.push('AI 사용: 도움받은 것 ' + [n.ai.help.join(', '), n.ai.helpText].filter(Boolean).join(' / ') + ' · 내가 판단·검증·수정한 것 ' + n.ai.decision);
+    L.push('');
+    L.push('8. 내 생각의 변화');
+    L.push('처음 생각: ' + (n.change.before || '(아직 작성하지 않음)'));
+    L.push('확인한 근거: ' + (n.change.evidence || '(아직 작성하지 않음)'));
+    L.push('지금 생각: ' + (n.change.after || '(아직 작성하지 않음)'));
+    L.push('');
+    L.push('9. 다음에 이어갈 질문');
+    L.push(n.next || '(아직 작성하지 않음)');
+    if (n.ai.used) {
+      L.push(''); L.push('10. AI 도움 사용');
+      L.push('AI가 도와준 것: ' + [n.ai.help.join(', '), n.ai.helpText].filter(Boolean).join(' / '));
+      L.push('내가 직접 판단·검증·수정한 것: ' + (n.ai.decision || '(작성 필요)'));
+    }
     L.push('');
     L.push('※ ' + (K.SUMMARY_NOTICE || ''));
     return L.join('\n');
