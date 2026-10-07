@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="창원경일고 학생을 위한 진로·탐구 성장 허브. 나 발견, 주제·과목 찾기, 탐구 설계, 도움, 성장 정리를 한곳에서 시작합니다.">
+<title>경일 진로·탐구 성장 허브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="hub.css">
+<style>
+.hero{display:flex;flex-direction:column;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:24px}
+.hero .rule{font-size:1.05rem;max-width:62ch}
+.needs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.need{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;min-width:0}
+.need .ico{font-size:1.6rem;line-height:1}
+.need h3{font-size:1.15rem}
+.need .to{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+.need .where{font-size:.8rem;color:var(--muted)}
+.need a.go{font-weight:700}
+.current{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.note-card .q{color:var(--muted);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.note-card .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.help-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.help-grid a{display:flex;align-items:center;min-height:48px;padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;font-weight:500}
+.help-grid a:hover{border-color:var(--primary);color:var(--primary)}
+.cycle{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;align-items:stretch}
+.cycle li{display:flex;align-items:center;gap:6px}
+.cycle .step{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;display:flex;flex-direction:column;line-height:1.35}
+.cycle .step b{font-family:var(--f-display);font-weight:400;font-size:1.05rem}
+.cycle .step span{font-size:.78rem;color:var(--muted)}
+.cycle .arrow{color:var(--muted)}
+.cycle .back .step{border-style:dashed}
+.lab{border-left:4px solid var(--accent)}
+table.ver{border-collapse:collapse;font-size:.88rem;width:100%}
+table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+.ver-wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">창원경일고 · 경일 진로·탐구 성장 허브</span>
+    <h1>지금 무엇이 필요한가요?</h1>
+    <p class="rule"><b>나를 찾을 때는 진로 실험실</b>에서 시작하고, <b>탐구 길잡이</b>에서 깊게 만들고, 막히면 <b>탐구 도움서</b>에서 확인해요. 활동을 마치면 다시 진로 실험실로 돌아와 성장을 정리해요.</p>
+  </header>
+
+  <section aria-labelledby="needs-h">
+    <h2 id="needs-h" class="sr-only">필요한 것 고르기</h2>
+    <div class="needs" id="needs"></div>
+  </section>
+
+  <section id="labBox" hidden></section>
+
+  <section aria-labelledby="cur-h">
+    <div class="row" style="justify-content:space-between">
+      <h2 id="cur-h">나의 현재 탐구</h2>
+      <a class="btn ghost no-print" href="notes.html?new=1">새 탐구노트</a>
+    </div>
+    <div class="current" id="current"></div>
+  </section>
+
+  <section id="help" aria-labelledby="help-h">
+    <h2 id="help-h">🛟 탐구하다 막혔어요</h2>
+    <p class="muted">지금 막힌 부분을 고르면 탐구 도움서의 해당 설명으로 바로 가요.</p>
+    <div class="help-grid" id="helpGrid"></div>
+  </section>
+
+  <section aria-labelledby="cycle-h">
+    <h2 id="cycle-h">탐구는 한 바퀴 돌고 다시 시작해요</h2>
+    <ol class="cycle" id="cycle"></ol>
+    <div class="card">
+      <h3>처음이라면</h3>
+      <p>좋은 탐구가 지나가는 7단계(배운 것 → 궁금한 것 → 직접 한 것 → 확인한 것 → 내가 한 것 → 달라진 것 → 다음에 할 것)를 먼저 읽어 보세요.</p>
+      <div class="row"><a class="btn quiet" href="seven-steps.html">좋은 탐구 7단계 읽기</a></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>🔒 탐구노트는 서버로 보내지 않고 지금 쓰는 브라우저에만 저장돼요. 다른 기기에서 이어 쓰려면 내 탐구노트에서 <b>내 탐구노트 저장하기</b>로 파일을 만들어 옮기세요. 이름·학번·연락처는 적지 마세요.</p>
+    <div class="row no-print"><span id="modeText"></span><button class="btn quiet" type="button" id="modeBtn"></button></div>
+    <div id="teacherBox" hidden></div>
+    <p>경일 진로·탐구 성장 허브 v1.1 · 공통 기준 <span id="kisVer"></span> · 창원경일고</p>
+  </footer>
+</div>
+
+<script src="inquiry-standard.js"></script>
+<script src="inquiry-notes.js"></script>
+<script>
+(function(){
+  'use strict';
+  var K=window.KIS, N=window.KNotes, esc=K.esc, S=K.SITES;
+  K.mountNav('home');
+  N.migrate();
+  document.getElementById('kisVer').textContent='v'+K.VERSION;
+
+  var needs=[
+    {ico:'🌱',t:'뭘 좋아하는지 잘 모르겠어요',d:'경험에서 내가 좋아하는 행동을 찾고, 진로 가설과 작은 실험을 세워요.',where:'진로 실험실',href:S.lab+'index.html',go:'나를 알아보기'},
+    {ico:'🧭',t:'관심 분야의 과목·주제를 찾고 싶어요',d:'15개 분야, 166개 탐구 주제와 연계 과목, 대학 공개 사례를 살펴봐요.',where:'진로 탐구 길잡이',href:S.explore+'index.html',go:'탐구거리 찾기'},
+    {ico:'🔬',t:'탐구 질문과 방법을 정하고 싶어요',d:'주제별 예시 질문과 방법을 고른 뒤, 내 탐구노트에서 질문 수준과 방법이 맞는지 점검해요.',where:'진로 탐구 길잡이 → 내 탐구노트',href:S.explore+'index.html',go:'탐구 설계하기',alt:{href:'notes.html?new=1',t:'바로 탐구노트 쓰기'}},
+    {ico:'🛟',t:'탐구하다 막혔어요',d:'질문이 너무 쉬울 때, 자료를 믿어도 될지, 설문·상관관계·실패·협업·AI 사용이 헷갈릴 때.',where:'탐구 도움서',href:'#help',go:'막힌 곳 고르기'},
+    {ico:'🌳',t:'활동을 마쳤어요',d:'무엇이 달라졌는지 정리하고, 다음 학년 계획과 선생님께 보여드릴 활동 요약을 만들어요.',where:'진로 실험실 성장 로드맵 · 내 탐구노트',href:S.lab+'roadmap.html',go:'성장 돌아보기',alt:{href:'notes.html',t:'활동 요약 만들기'}}
+  ];
+  document.getElementById('needs').innerHTML=needs.map(function(n){
+    return '<article class="need"><span class="ico" aria-hidden="true">'+n.ico+'</span><h3>'+esc(n.t)+'</h3><p class="muted">'+esc(n.d)+'</p>'+
+      '<div class="to"><span class="where">'+esc(n.where)+'</span><a class="btn" href="'+n.href+'">'+esc(n.go)+'</a>'+
+      (n.alt?'<a class="go small" href="'+n.alt.href+'">'+esc(n.alt.t)+' →</a>':'')+'</div></article>';
+  }).join('');
+
+  document.getElementById('helpGrid').innerHTML=K.HELP.map(function(h){
+    return '<a href="'+S.guide+'#'+h.id+'">'+esc(h.label)+'</a>';
+  }).join('');
+
+  var cyc=[['발견','진로 실험실'],['설계','진로 탐구 길잡이'],['실행','내 탐구노트'],['점검','탐구 도움서'],['성장','진로 실험실']];
+  document.getElementById('cycle').innerHTML=cyc.map(function(c,i){
+    return '<li><span class="step"><b>'+c[0]+'</b><span>'+c[1]+'</span></span>'+(i<cyc.length-1?'<span class="arrow" aria-hidden="true">→</span>':'')+'</li>';
+  }).join('')+'<li class="back"><span class="arrow" aria-hidden="true">↻</span><span class="step"><b>다시 설계</b><span>다음 질문으로</span></span></li>';
+
+  function renderCurrent(){
+    var list=N.list().filter(function(n){return !N.isBlank(n);}), box=document.getElementById('current');
+    if(!list.length){
+      box.innerHTML='<div class="card"><h3>아직 탐구노트가 없어요</h3><p class="muted">탐구 하나에 노트 하나를 만들어요. 진로 실험실이나 탐구 길잡이에서 담은 내용도 여기에 모여요.</p><div class="row"><a class="btn" href="notes.html?new=1">새 탐구노트 만들기</a></div></div>';
+      return;
+    }
+    box.innerHTML=list.slice(0,4).map(function(n){
+      return '<article class="card note-card"><h3>'+esc(N.title(n))+'</h3>'+(n.question?'<p class="q">'+esc(n.question)+'</p>':'')+
+        '<div class="meta"><span class="chip '+n.stage+'">'+esc(N.stageLabel(n.stage))+'</span><span>마지막 저장 '+esc(N.when(n.updatedAt))+'</span></div>'+
+        '<div class="row"><a class="btn quiet" href="notes.html#'+encodeURIComponent(n.id)+'">이어하기</a></div></article>';
+    }).join('')+(list.length>4?'<div class="card"><p class="muted">탐구노트 '+list.length+'개 중 최근 4개예요.</p><a href="notes.html">모두 보기 →</a></div>':'');
+  }
+  function renderLab(){
+    var lab=N.labBridge(), el=document.getElementById('labBox');
+    if(!lab.has){el.hidden=true;return;}
+    el.hidden=false;
+    el.innerHTML='<div class="card lab"><span class="eyebrow">진로 실험실에서 찾은 나</span><h3>'+esc(N.interestText(lab)||'진로 가설')+'</h3>'+
+      (lab.experiment?'<p class="muted">작은 실험: '+esc(lab.experiment)+'</p>':'')+
+      (lab.seed?'<p class="muted">질문 씨앗: '+esc(lab.seed)+'</p>':'')+
+      '<div class="row"><a class="btn" href="'+S.explore+'index.html">이 관심으로 주제 찾기</a><a class="btn quiet" href="'+S.lab+'keyword.html">첫 질문 다듬기</a></div></div>';
+  }
+  function renderMode(){
+    var pub=N.mode()==='public';
+    document.getElementById('modeText').textContent=pub?'지금은 공용 컴퓨터 모드예요. 창을 닫으면 기록이 사라져요.':'지금은 개인 기기 모드예요.';
+    document.getElementById('modeBtn').textContent=pub?'개인 기기 모드로 바꾸기':'공용 컴퓨터예요';
+  }
+  document.getElementById('modeBtn').addEventListener('click',function(){N.setMode(N.mode()==='public'?'private':'public');renderMode();renderCurrent();renderLab();});
+
+  /* 교사용: 네 저장소의 공통 파일 버전이 같은지 확인 (?teacher=1) */
+  if(new URLSearchParams(location.search).get('teacher')==='1'){
+    var tb=document.getElementById('teacherBox'); tb.hidden=false;
+    tb.innerHTML='<h3>교사용 · 공통 파일 버전 점검</h3><div class="ver-wrap"><table class="ver"><thead><tr><th>저장소</th><th>공통 기준</th><th>탐구노트</th></tr></thead><tbody id="verBody"></tbody></table></div>';
+    var repos=[['허브',''],['진로 실험실',S.lab],['진로 탐구 길잡이',S.explore],['탐구 도움서',S.guide]];
+    function first(url){return fetch(url,{cache:'no-store'}).then(function(r){return r.ok?r.text():'';}).then(function(t){var m=t.match(/VERSION\s+([\d.]+)/);return m?m[1]:'없음';}).catch(function(){return '열 수 없음';});}
+    Promise.all(repos.map(function(r){return Promise.all([first(r[1]+'inquiry-standard.js'),first(r[1]+'inquiry-notes.js')]);})).then(function(rs){
+      document.getElementById('verBody').innerHTML=rs.map(function(v,i){var bad=v[0]!==K.VERSION;return '<tr><td>'+repos[i][0]+'</td><td>'+(bad?'⚠ ':'')+esc(v[0])+'</td><td>'+esc(v[1])+'</td></tr>';}).join('');
+    });
+  }
+
+  renderCurrent(); renderLab(); renderMode();
+  N.onChange(function(){renderCurrent();renderLab();});
+})();
+</script>
+</body>
+</html>
