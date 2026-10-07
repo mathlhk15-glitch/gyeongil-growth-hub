@@ -117,13 +117,14 @@
     var repeated = /(3회|세 번|반복|평균|여러 번|2회|두 번)/.test(combined);
     var method = n.method || '';
 
+    /* 학생 내용에 직접 반응하는 칭찬을 먼저 보여 줍니다. */
+    if (hasNum) good.push('개수·시간·수치처럼 확인 가능한 내용을 사용해서 차이를 더 분명하게 보여 줬어요.');
+    if (repeated) good.push('한 번만 보지 않고 여러 번 확인하거나 평균을 내어 우연의 영향을 줄이려 했어요.');
+    if (n.revision) good.push('예상과 달랐을 때 그냥 넘기지 않고 방법이나 생각을 수정한 과정을 남겼어요.');
+    if (ev.length) good.push('자료·관찰 기록을 근거로 남겼어요. 출처와 실제 확인 내용이 서로 맞는지 마지막으로 확인해 보세요.');
+    if (n.role) good.push('내가 직접 한 행동을 따로 적어서 탐구 과정이 무엇이었는지 알 수 있어요.');
+    if (n.change && n.change.after) good.push('활동 후의 판단을 자기 말로 정리했어요. 처음 생각과 근거가 잘 이어지는지 확인해 보세요.');
     if (n.question && n.method) good.push('탐구 질문과 확인 방법을 정했어요.');
-    if (ev.length) good.push('근거 항목을 작성했어요. 출처와 실제 확인 내용을 마지막으로 확인해 보세요.');
-    if (n.role) good.push('내가 직접 한 행동을 따로 적었어요.');
-    if (hasNum) good.push('개수·시간·수치처럼 확인 가능한 내용을 사용했어요.');
-    if (repeated) good.push('한 번만 보지 않고 반복해서 확인하려고 했어요.');
-    if (n.revision) good.push('예상과 달랐을 때 무엇을 고쳤는지 남겼어요.');
-    if (n.change && n.change.after) good.push('활동 후의 생각을 적었어요. 처음 생각과 근거가 잘 이어지는지 확인해 보세요.');
 
     if (!ev.length) improve.push('자료 이름·관찰 시점·표·그래프 중 하나라도 실제 근거를 남겨 보세요.');
     if (!n.role) improve.push('“조사했다”보다 내가 직접 비교·계산·관찰·수정한 행동을 한 문장 적어 보세요.');
@@ -133,11 +134,13 @@
     if (!(n.change && n.change.after)) improve.push('처음 예상과 비교해 지금 판단이 유지·수정·보류되었는지 근거와 함께 적어 보세요.');
     if (!n.next) improve.push('이번에 확인하지 못한 점을 다음 질문으로 한 가지 남겨 보세요.');
 
-    var next = improve[0] || '자기평가서를 읽고 “내가 실제로 한 행동과 근거”가 정확한지 마지막으로 확인하세요.';
+    var fallbackImprove = method === 'observe' ? '예상과 비슷한 결과가 나왔더라도 다른 날·시간·장소에서 한 번 더 확인하면 판단이 더 단단해져요.' : method === 'literature' ? '결론이 잘 정리됐다면 성격이 다른 자료 하나를 더 찾아 같은 결론이 나오는지 확인해 보세요.' : '결론이 잘 정리됐다면 비교 기준이나 조건 하나를 더해 같은 판단이 유지되는지 확인해 보세요.';
+    if (n.limits && /판단을 확정하기 어려움/.test(n.limits)) fallbackImprove = '판단을 보류한 것은 괜찮아요. 무엇을 한 번 더 확인하면 판단할 수 있을지 다음 행동을 구체적으로 정해 보세요.';
+    var next = improve[0] || fallbackImprove;
     var levelUp = method === 'observe' ? '다음에는 관찰 횟수나 조건을 하나 늘려 🌿 기본 탐구로 이어가 보세요.' : method === 'literature' ? '다음에는 서로 다른 성격의 자료를 하나 더 비교해 🌿 기본 탐구로 이어가 보세요.' : '다음에는 조건이나 비교 기준을 하나 더해 🌿 기본 탐구로 이어가 보세요.';
     return '<div class="card"><h3>🧭 탐구 코칭 리포트</h3><p class="small muted">점수나 합격 가능성을 매기는 것이 아니라, 입력한 내용에서 확인되는 부분만 보고 다음 행동을 제안합니다.</p>'+ 
       '<p><b>잘한 점</b></p><ul>'+ (good.length?good.slice(0,3):['탐구를 시작하고 끝까지 정리하려고 한 점이 좋습니다.']).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+ 
-      '<p><b>보완하면 좋은 점</b></p><ul>'+ (improve.length?improve.slice(0,2):['큰 누락은 보이지 않아요. 사실과 근거가 정확한지만 다시 확인하세요.']).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+ 
+      '<p><b>보완하면 좋은 점</b></p><ul>'+ (improve.length?improve.slice(0,2):[fallbackImprove]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+ 
       '<p><b>지금 할 일 1개</b><br>'+esc(next)+'</p><p><b>다음 단계</b><br>'+esc(levelUp)+'</p></div>';
   }
 
