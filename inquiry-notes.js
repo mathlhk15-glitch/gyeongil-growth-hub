@@ -1,4 +1,4 @@
-/* INQUIRY NOTES VERSION 1.2 (schemaVersion 1)
+/* INQUIRY NOTES VERSION 1.3 (schemaVersion 1)
  * 경일 진로·탐구 성장 시스템 — 공통 탐구노트 저장소
  * 원본: gyeongil-growth-hub/inquiry-notes.js · 복사본: 세 저장소 루트
  * 네 사이트가 같은 github.io 주소(origin)를 쓰므로 같은 브라우저 저장 공간을 공유합니다.
@@ -252,48 +252,36 @@
     var qt = (K.QUESTION_TYPES || []).filter(function (x) { return x.id === n.questionType; })[0];
     var m = K.METHODS && K.METHODS[n.method];
     var from = (K.START_FROM || []).filter(function (x) { return x.id === n.start.from; })[0];
-    var L = [];
+    var L = [], no = 0;
+    function section(title, lines) {
+      lines = (lines || []).filter(function(x){ return String(x || '').trim(); });
+      if (!lines.length) return;
+      no += 1; L.push(no + '. ' + title); lines.forEach(function(x){ L.push(x); }); L.push('');
+    }
     L.push('[탐구활동 자기평가서] ' + title(n));
     L.push('');
-    L.push('1. 활동을 시작한 이유');
-    L.push([from ? from.label : '', n.start.text, n.interest ? '관심 분야: ' + n.interest : ''].filter(Boolean).join(' — '));
-    L.push('');
-    L.push('2. 수업·교과와의 연결');
-    L.push([n.subject, n.concept].filter(Boolean).join(' / ') || '(해당하면 작성)');
-    L.push('');
-    L.push('3. 내가 확인하려고 한 질문');
-    L.push(n.question || '(아직 작성하지 않음)');
-    if (lv) L.push('질문 수준: ' + lv.n + '단계 ' + lv.name);
-    L.push('');
-    L.push('4. 내가 사용한 방법과 근거');
-    L.push([qt ? qt.ask : '', m ? m.name : '', n.methodWhy].filter(Boolean).join(' · ') || '(아직 작성하지 않음)');
-    if (n.evidence.length) n.evidence.forEach(function (e, i) { if (e.title) L.push('근거 ' + (i + 1) + ': ' + e.title); });
-    else L.push('근거: (아직 작성하지 않음)');
-    L.push('');
-    L.push('5. 내가 직접 한 일');
-    L.push(n.role || '(아직 작성하지 않음)');
-    L.push('');
-    L.push('6. 예상과 달랐던 점과 수정');
-    L.push('예상과 달랐던 점: ' + (n.problem || '없거나 아직 작성하지 않음'));
-    L.push('수정·보완한 점: ' + (n.revision || '없거나 아직 작성하지 않음'));
-    L.push('');
-    L.push('7. 결과와 결과물');
-    L.push([n.result, n.outputs.join(', ')].filter(Boolean).join(' / ') || '(아직 작성하지 않음)');
-    if (n.limits) L.push('한계: ' + n.limits);
-    L.push('');
-    L.push('8. 내 생각의 변화');
-    L.push('처음 생각: ' + (n.change.before || '(아직 작성하지 않음)'));
-    L.push('확인한 근거: ' + (n.change.evidence || '(아직 작성하지 않음)'));
-    L.push('지금 생각: ' + (n.change.after || '(아직 작성하지 않음)'));
-    L.push('');
-    L.push('9. 다음에 이어갈 질문');
-    L.push(n.next || '(아직 작성하지 않음)');
-    if (n.ai.used) {
-      L.push(''); L.push('10. AI 도움 사용');
-      L.push('AI가 도와준 것: ' + [n.ai.help.join(', '), n.ai.helpText].filter(Boolean).join(' / '));
-      L.push('내가 직접 판단·검증·수정한 것: ' + (n.ai.decision || '(작성 필요)'));
-    }
-    L.push('');
+    section('활동을 시작한 이유', [[from ? from.label : '', n.start.text, n.interest ? '관심 분야: ' + n.interest : ''].filter(Boolean).join(' — ')]);
+    section('수업·교과와의 연결', [[n.subject, n.concept].filter(Boolean).join(' / ')]);
+    var qlines = [n.question];
+    if (lv) qlines.push('질문 수준: ' + lv.n + '단계 ' + lv.name);
+    section('내가 확인하려고 한 질문', qlines);
+
+    var methodLines = [[qt ? qt.ask : '', m ? m.name : '', n.methodWhy].filter(Boolean).join(' · ')];
+    if (n.evidence && n.evidence.length) n.evidence.forEach(function (e, i) {
+      if (!e || !String(e.title || '').trim()) return;
+      var meta = [e.who ? '작성·기관 ' + e.who : '', e.when ? '시기 ' + e.when : '', e.target ? '대상 ' + e.target : '', e.how ? '확인 방법 ' + e.how : '', e.differs ? '자료 차이 ' + e.differs : ''].filter(Boolean).join(' / ');
+      methodLines.push('근거 ' + (i + 1) + ': ' + e.title + (meta ? ' [' + meta + ']' : ''));
+    });
+    section('내가 사용한 방법과 근거', methodLines);
+    section('내가 직접 한 일', [n.role]);
+    section('예상과 달랐던 점과 수정', [n.problem ? '예상과 달랐던 점: ' + n.problem : '', n.revision ? '수정·보완한 점: ' + n.revision : '']);
+    section('결과와 결과물', [[n.result, (n.outputs || []).join(', ')].filter(Boolean).join(' / '), n.limits ? '한계: ' + n.limits : '']);
+    section('내 생각의 변화', [n.change && n.change.before ? '처음 생각: ' + n.change.before : '', n.change && n.change.evidence ? '확인한 근거: ' + n.change.evidence : '', n.change && n.change.after ? '지금 생각: ' + n.change.after : '']);
+    section('다음에 이어갈 질문', [n.next]);
+    if (n.ai && n.ai.used) section('AI 도움 사용', [
+      [n.ai.help && n.ai.help.length ? n.ai.help.join(', ') : '', n.ai.helpText].filter(Boolean).join(' / ') ? 'AI가 도와준 것: ' + [n.ai.help && n.ai.help.length ? n.ai.help.join(', ') : '', n.ai.helpText].filter(Boolean).join(' / ') : '',
+      n.ai.decision ? '내가 직접 판단·검증·수정한 것: ' + n.ai.decision : ''
+    ]);
     L.push('※ ' + (K.SUMMARY_NOTICE || ''));
     return L.join('\n');
   }
