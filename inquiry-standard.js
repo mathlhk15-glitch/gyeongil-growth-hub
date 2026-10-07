@@ -1,4 +1,4 @@
-/* INQUIRY STANDARD VERSION 1.1
+/* INQUIRY STANDARD VERSION 1.2
  * 경일 진로·탐구 성장 시스템 — 공통 탐구 기준
  * 원본: gyeongil-growth-hub/inquiry-standard.js
  * 복사본: career-lab / career-exploration-tool / seteuk-guide 저장소 루트
@@ -6,7 +6,7 @@
  */
 (function () {
   'use strict';
-  var VERSION = '1.1';
+  var VERSION = '1.2';
 
   /* 배포용 GitHub Pages 절대 주소: 저장소 간 이동 시 상대경로 404를 막습니다. */
   var SITES = {
@@ -173,7 +173,7 @@
     '.kis-nav .kis-home{font-weight:700;color:#fff;margin-right:6px}' +
     '.kis-nav .kis-notes{margin-left:auto;background:#fff;color:#13294b;font-weight:700}' +
     '.kis-nav .kis-notes:hover{background:#e7eeff;color:#13294b}' +
-    '@media(max-width:520px){.kis-nav .kis-in{padding:0 3px;gap:0;overflow:visible}.kis-nav .kis-home{display:none}.kis-nav a{flex:1 1 20%;justify-content:center;gap:2px;padding:0 2px;font-size:11px;min-width:0}.kis-nav .kis-notes{margin-left:0}.kis-nav a span{font-size:13px}}' +
+    '@media(max-width:520px){.kis-nav .kis-in{padding:0 3px;gap:0;overflow:visible}.kis-nav .kis-home{display:inline-flex;flex:0 0 34px;width:34px;min-width:34px;margin-right:0;padding:0;justify-content:center;font-size:0}.kis-nav .kis-home::before{content:"🏠";font-size:15px}.kis-nav a:not(.kis-home){flex:1 1 0;justify-content:center;gap:2px;padding:0 1px;font-size:10.5px;min-width:0}.kis-nav .kis-notes{margin-left:0}.kis-nav a span{font-size:13px}}' +
     '@media print{.kis-nav{display:none!important}}';
 
   function navHtml(active) {

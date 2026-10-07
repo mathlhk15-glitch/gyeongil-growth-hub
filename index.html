@@ -32,6 +32,11 @@
 .cycle .arrow{color:var(--muted)}
 .cycle .back .step{border-style:dashed}
 .lab{border-left:4px solid var(--accent)}
+.howto-toggle{align-self:flex-start;margin-top:2px}
+.howto{margin-top:2px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;max-width:760px}
+.howto[hidden]{display:none}
+.howto ol{margin:8px 0 0;padding-left:1.35em;display:grid;gap:7px}
+.howto b{color:var(--primary)}
 table.ver{border-collapse:collapse;font-size:.88rem;width:100%}
 table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
 .ver-wrap{overflow-x:auto}
@@ -43,6 +48,33 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
     <span class="eyebrow">창원경일고 · 경일 진로·탐구 성장 허브</span>
     <h1>지금 무엇이 필요한가요?</h1>
     <p class="rule"><b>나를 찾을 때는 진로 실험실</b>에서 시작하고, <b>탐구 길잡이</b>에서 깊게 만들고, 막히면 <b>탐구 도움서</b>에서 확인해요. 활동을 마치면 다시 진로 실험실로 돌아와 성장을 정리해요.</p>
+    <button class="btn quiet howto-toggle no-print" type="button" id="howtoBtn" aria-expanded="false" aria-controls="howtoBox">❓ 처음인가요? 사용법 보기</button>
+    <div class="howto" id="howtoBox" hidden>
+      <h3 style="margin:0 0 8px">처음이라면 이렇게 하세요</h3>
+      <p style="margin:0 0 12px">처음부터 모든 메뉴를 다 할 필요는 없어요. <b>지금 나에게 필요한 것 하나만 골라서</b> 시작하면 됩니다.</p>
+      <ol>
+        <li><b>🌱 1. 내가 뭘 좋아하는지 잘 모르겠어요</b><br>
+          → <b>‘나를 알아보기’</b>를 눌러요.<br>
+          예: 만들기, 설명하기, 조사하기, 사람 돕기처럼 내가 좋아하는 행동을 찾아요.</li>
+        <li><b>🧭 2. 관심 분야는 있는데 탐구 주제가 없어요</b><br>
+          → <b>‘탐구거리 찾기’</b>를 눌러요.<br>
+          예: 기계에 관심 있다면 모터, 에너지, 센서처럼 실제로 탐구할 주제를 골라요.</li>
+        <li><b>🔬 3. 무엇을 알아볼지 질문을 만들고 방법을 정해요</b><br>
+          → <b>‘탐구 설계하기’</b>를 눌러요.<br>
+          예: “전압이 달라지면 모터의 회전속도는 어떻게 달라질까?”처럼 질문을 만들고, 실험·설문·자료 비교 중 알맞은 방법을 골라요.</li>
+        <li><b>🛟 4. 하다가 막히면 바로 도움을 받아요</b><br>
+          → <b>‘막힌 곳 고르기’</b>를 눌러요.<br>
+          예: 자료를 믿어도 되는지, 설문을 어떻게 하는지, 결과가 예상과 다를 때 어떻게 고치는지 찾아볼 수 있어요.</li>
+        <li><b>🌳 5. 탐구가 끝나면 내가 한 일을 정리해요</b><br>
+          → <b>‘성장 돌아보기’</b> 또는 <b>‘활동 요약 만들기’</b>를 눌러요.<br>
+          무엇을 알아냈는지, 무엇을 고쳤는지, 생각이 어떻게 달라졌는지, 다음에는 무엇을 더 알아볼지 적어요.</li>
+      </ol>
+      <div style="margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)">
+        <b>📓 꼭 기억하세요</b><br>
+        같은 탐구는 <b>같은 탐구노트에 계속 이어서</b> 적으면 됩니다. 다른 새 주제를 시작할 때만 새 탐구노트를 만들어요.
+      </div>
+      <p class="muted" style="margin:10px 0 0">길을 잃었나요? 어느 화면에서든 상단의 <b>🏠 허브</b>를 누르면 처음 화면으로 돌아올 수 있어요.</p>
+    </div>
   </header>
 
   <section aria-labelledby="needs-h">
@@ -80,7 +112,7 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
     <p>🔒 탐구노트는 서버로 보내지 않고 지금 쓰는 브라우저에만 저장돼요. 다른 기기에서 이어 쓰려면 내 탐구노트에서 <b>내 탐구노트 저장하기</b>로 파일을 만들어 옮기세요. 이름·학번·연락처는 적지 마세요.</p>
     <div class="row no-print"><span id="modeText"></span><button class="btn quiet" type="button" id="modeBtn"></button></div>
     <div id="teacherBox" hidden></div>
-    <p>경일 진로·탐구 성장 허브 v1.1 · 공통 기준 <span id="kisVer"></span> · 창원경일고</p>
+    <p>경일 진로·탐구 성장 허브 v1.2 · 공통 기준 <span id="kisVer"></span> · 창원경일고</p>
   </footer>
 </div>
 
@@ -93,6 +125,8 @@ table.ver th,table.ver td{border-bottom:1px solid var(--line);padding:6px 8px;te
   K.mountNav('home');
   N.migrate();
   document.getElementById('kisVer').textContent='v'+K.VERSION;
+  var howtoBtn=document.getElementById('howtoBtn'), howtoBox=document.getElementById('howtoBox');
+  if(howtoBtn&&howtoBox){howtoBtn.addEventListener('click',function(){var open=howtoBox.hidden;howtoBox.hidden=!open;howtoBtn.setAttribute('aria-expanded',open?'true':'false');howtoBtn.textContent=open?'사용법 닫기':'❓ 처음인가요? 사용법 보기';});}
 
   var needs=[
     {ico:'🌱',t:'뭘 좋아하는지 잘 모르겠어요',d:'경험에서 내가 좋아하는 행동을 찾고, 진로 가설과 작은 실험을 세워요.',where:'진로 실험실',href:S.lab+'index.html',go:'나를 알아보기'},
