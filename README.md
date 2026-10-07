@@ -1,4 +1,4 @@
-# 경일 진로·탐구 성장 허브 (growth-hub) v1.1
+# 경일 진로·탐구 성장 허브 (gyeongil-growth-hub) v1.1
 
 창원경일고 학생에게 세 사이트를 **하나의 진로·탐구 성장 시스템**처럼 보여 주는 통합 입구입니다.
 허브는 학생에게 사이트 이름 대신 “지금 무엇이 필요한가요?”를 묻고, 공통 **내 탐구노트**와 공통 **탐구 기준**의 원본을 가지고 있습니다.
@@ -7,7 +7,7 @@
 
 | 저장소 | 한 단어 | 하는 일 | 언제 쓰나 |
 |---|---|---|---|
-| `growth-hub` (이 저장소) | 입구·노트 | 필요에 따라 안내, 내 탐구노트, 활동 요약 | 언제든 |
+| `gyeongil-growth-hub` (이 저장소) | 입구·노트 | 필요에 따라 안내, 내 탐구노트, 활동 요약 | 언제든 |
 | `career-lab` | 🌱 발견 | 경험 → 행동 → 관심 → 진로 가설 → 첫 질문 → 설계 → 성장 로드맵 → 제출 | 뭘 할지 모를 때, 활동을 마쳤을 때 |
 | `career-exploration-tool` | 🧭 설계 | 분야·주제·과목·질문·방법·자료·사례 | 실제 탐구를 깊게 만들 때 |
 | `seteuk-guide` | 🛟 점검 | 질문·근거·설문·상관/인과·수정·협업·AI·성찰 | 탐구하다 막힐 때 |
@@ -43,9 +43,9 @@
 
 ## 배포
 
-1. GitHub에 `growth-hub` 저장소를 public으로 만들고 이 폴더의 파일을 루트에 올립니다.
+1. GitHub에 `gyeongil-growth-hub` 저장소를 public으로 만들고 이 폴더의 파일을 루트에 올립니다.
 2. Settings → Pages → Branch `main` / `(root)`.
-3. 주소: `https://mathlhk15-glitch.github.io/growth-hub/`
+3. 주소: `https://mathlhk15-glitch.github.io/gyeongil-growth-hub/`
 4. 나머지 세 저장소도 같은 계정에서 Pages로 켭니다. 저장소 이름을 바꾸면 `inquiry-standard.js`의 `SITES`를 고칩니다.
 5. ONE QUESTION 웹 주소가 생기면 `SITES.oneQuestion`에 넣습니다(비어 있으면 “준비 중”으로 표시).
 6. lhk15 포털에는 이 허브 주소 하나만 카드로 걸어도 됩니다.
@@ -58,7 +58,7 @@
 python -m http.server 8000
 ```
 
-`http://localhost:8000/growth-hub/`를 엽니다.
+`http://localhost:8000/gyeongil-growth-hub/`를 엽니다.
 
 
 ## 통합 수정판 1.1

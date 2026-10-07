@@ -1,6 +1,6 @@
 /* INQUIRY STANDARD VERSION 1.1
  * 경일 진로·탐구 성장 시스템 — 공통 탐구 기준
- * 원본: growth-hub/inquiry-standard.js
+ * 원본: gyeongil-growth-hub/inquiry-standard.js
  * 복사본: career-lab / career-exploration-tool / seteuk-guide 저장소 루트
  * 기준을 바꿀 때는 원본을 고친 뒤 세 저장소의 복사본을 같은 파일로 교체하고 VERSION을 함께 올립니다.
  */
@@ -8,12 +8,12 @@
   'use strict';
   var VERSION = '1.1';
 
-  /* 사이트 주소: 네 저장소가 같은 github.io 계정 아래에 있으므로 형제 폴더로 이동합니다. */
+  /* 배포용 GitHub Pages 절대 주소: 저장소 간 이동 시 상대경로 404를 막습니다. */
   var SITES = {
-    hub: '../growth-hub/',
-    lab: '../career-lab/',
-    explore: '../career-exploration-tool/',
-    guide: '../seteuk-guide/',
+    hub: 'https://mathlhk15-glitch.github.io/gyeongil-growth-hub/',
+    lab: 'https://mathlhk15-glitch.github.io/career-lab/',
+    explore: 'https://mathlhk15-glitch.github.io/career-exploration-tool/',
+    guide: 'https://mathlhk15-glitch.github.io/seteuk-guide/',
     oneQuestion: '' // ONE QUESTION 웹 주소가 정해지면 여기에 넣습니다. 비어 있으면 '준비 중'으로 표시합니다.
   };
 

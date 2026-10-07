@@ -1,6 +1,6 @@
 /* INQUIRY NOTES VERSION 1.1 (schemaVersion 1)
  * 경일 진로·탐구 성장 시스템 — 공통 탐구노트 저장소
- * 원본: growth-hub/inquiry-notes.js · 복사본: 세 저장소 루트
+ * 원본: gyeongil-growth-hub/inquiry-notes.js · 복사본: 세 저장소 루트
  * 네 사이트가 같은 github.io 주소(origin)를 쓰므로 같은 브라우저 저장 공간을 공유합니다.
  * 이름·학번·연락처는 저장하지 않습니다.
  */

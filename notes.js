@@ -1,4 +1,4 @@
-/* 내 탐구노트 편집 화면 v1.0 — growth-hub */
+/* 내 탐구노트 편집 화면 v1.0 — gyeongil-growth-hub */
 (function () {
   'use strict';
   var K = window.KIS, N = window.KNotes, esc = K.esc, S = K.SITES;
