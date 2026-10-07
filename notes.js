@@ -134,10 +134,24 @@
     if (!(n.change && n.change.after)) improve.push('처음 예상과 비교해 지금 판단이 유지·수정·보류되었는지 근거와 함께 적어 보세요.');
     if (!n.next) improve.push('이번에 확인하지 못한 점을 다음 질문으로 한 가지 남겨 보세요.');
 
-    var fallbackImprove = method === 'observe' ? '예상과 비슷한 결과가 나왔더라도 다른 날·시간·장소에서 한 번 더 확인하면 판단이 더 단단해져요.' : method === 'literature' ? '결론이 잘 정리됐다면 성격이 다른 자료 하나를 더 찾아 같은 결론이 나오는지 확인해 보세요.' : '결론이 잘 정리됐다면 비교 기준이나 조건 하나를 더해 같은 판단이 유지되는지 확인해 보세요.';
+    var fallbackImprove;
+    if (method === 'observe') {
+      fallbackImprove = repeated ? '여러 번 확인한 점이 좋아요. 다음에는 다른 장소나 조건에서도 같은 경향이 나타나는지 살펴보면 판단이 더 단단해져요.' : '예상과 비슷한 결과가 나왔더라도 다른 날이나 다른 시간에 한 번 더 확인하면 판단이 더 단단해져요.';
+    } else if (method === 'literature') {
+      fallbackImprove = '결론이 잘 정리됐다면 성격이 다른 자료 하나를 더 찾아 같은 결론이 나오는지 확인해 보세요.';
+    } else {
+      fallbackImprove = '결론이 잘 정리됐다면 비교 기준이나 조건 하나를 더해 같은 판단이 유지되는지 확인해 보세요.';
+    }
     if (n.limits && /판단을 확정하기 어려움/.test(n.limits)) fallbackImprove = '판단을 보류한 것은 괜찮아요. 무엇을 한 번 더 확인하면 판단할 수 있을지 다음 행동을 구체적으로 정해 보세요.';
-    var next = improve[0] || fallbackImprove;
-    var levelUp = method === 'observe' ? '다음에는 관찰 횟수나 조건을 하나 늘려 🌿 기본 탐구로 이어가 보세요.' : method === 'literature' ? '다음에는 서로 다른 성격의 자료를 하나 더 비교해 🌿 기본 탐구로 이어가 보세요.' : '다음에는 조건이나 비교 기준을 하나 더해 🌿 기본 탐구로 이어가 보세요.';
+    var next;
+    if (improve.length) {
+      next = improve[0];
+    } else if (ev.length) {
+      next = '자기평가서를 제출하기 전에 표·수치·자료 이름이 실제 기록과 맞는지 한 번만 확인해 보세요.';
+    } else {
+      next = '자기평가서를 제출하기 전에 내가 직접 확인한 근거가 빠지지 않았는지 한 번만 확인해 보세요.';
+    }
+    var levelUp = method === 'observe' ? (repeated ? '다음에는 장소나 조건을 하나 바꿔 🌿 기본 탐구로 이어가 보세요.' : '다음에는 관찰 횟수나 조건을 하나 늘려 🌿 기본 탐구로 이어가 보세요.') : method === 'literature' ? '다음에는 서로 다른 성격의 자료를 하나 더 비교해 🌿 기본 탐구로 이어가 보세요.' : '다음에는 조건이나 비교 기준을 하나 더해 🌿 기본 탐구로 이어가 보세요.';
     return '<div class="card"><h3>🧭 탐구 코칭 리포트</h3><p class="small muted">점수나 합격 가능성을 매기는 것이 아니라, 입력한 내용에서 확인되는 부분만 보고 다음 행동을 제안합니다.</p>'+ 
       '<p><b>잘한 점</b></p><ul>'+ (good.length?good.slice(0,3):['탐구를 시작하고 끝까지 정리하려고 한 점이 좋습니다.']).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+ 
       '<p><b>보완하면 좋은 점</b></p><ul>'+ (improve.length?improve.slice(0,2):[fallbackImprove]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('') +'</ul>'+ 
@@ -173,6 +187,7 @@
           (lv ? '<div class="notice"><b>' + esc(lv.sign) + '</b><br>한 단계 깊게: ' + esc(lv.up) + '</div>' : '') + '</div>' +
         '<div class="f"><span class="lab">탐구는 어디서 시작됐나요?</span>' + choices('from', K.START_FROM.map(function (x) { return { id: x.id, html: x.icon + ' ' + esc(x.label) }; }), n.start.from) + (from ? '<p class="hint">' + esc(from.hint) + '</p>' : '') + news + '</div>' +
         field('start.text', '출발점', '', true, '예: 물리학 시간에 배운 전기에너지와 전력') +
+        '<p class="hint">문장이 막히면 이렇게 시작해도 됩니다. <b>“○○ 수업에서 △△ 개념을 배우면서, 실제 생활의 □□도 그런지 궁금해 탐구를 시작했다.”</b></p>' +
         '<div class="two">' + field('subject', '과목', '', false, '예: 물리학') + field('concept', '교과 개념', '', false, '예: 전력 = 전압 × 전류') + '</div>' +
         '<p class="links"><a href="' + S.explore + 'index.html">🧭 관심 분야에 맞는 과목·주제 찾기</a></p>' +
         '<div class="f">' + field('interest', '관심 분야', '', false, '예: 기계공학, 에너지 효율').replace(/^<div class="f">|<\/div>$/g, '') +
@@ -224,9 +239,9 @@
       field('next', '다음 질문', K.NEXT_ASK, true, '예: 부하의 크기를 바꾸면 효율은 어떻게 달라질까?') +
       '<details class="ai"' + (n.ai.used ? ' open' : '') + '><summary>AI를 사용했다면</summary><div class="f">' +
         '<label class="check"><input type="checkbox" data-f="ai.used"' + (n.ai.used ? ' checked' : '') + '> 이 탐구에서 AI를 사용했어요</label>' +
-        (n.ai.used ? '<span class="lab">AI가 도와준 것</span>' + choices('aihelp', aiHelp, n.ai.help, true) +
-          field('ai.helpText', '그 밖에 도움받은 것', '', false) +
-          field('ai.decision', '내가 판단·검증·수정한 것', K.AI.decide.join(' '), true, '예: 질문 후보 10개 중 교과 개념과 맞지 않는 7개를 빼고, 답변 출처를 원문과 대조해 틀린 수치 1개를 고침') : '') +
+        (n.ai.used ? '<span class="lab">AI가 도와준 것 <span class="hint">예: 질문 아이디어 추천, 관련 용어 설명</span></span>' + choices('aihelp', aiHelp, n.ai.help, true) +
+          field('ai.helpText', '그 밖에 도움받은 것', '', false, '예: 질문 후보 3개를 추천받고 관련 용어 뜻을 확인함') +
+          field('ai.decision', '내가 판단·검증·수정한 것', K.AI.decide.join(' '), true, '예: 추천 질문 중 직접 조사 가능한 것을 내가 고르고, AI 답변의 수치를 원자료와 대조해 틀린 부분을 수정함') : '') +
         '<p class="hint">' + esc(K.AI.principle) + '</p></div></details>' +
       helpLinks(['revision', 'reflection', 'ai', 'causation']);
   }
