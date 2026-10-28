@@ -1,4 +1,4 @@
-/* INQUIRY STANDARD VERSION 1.4
+/* INQUIRY STANDARD VERSION 1.5
  * 경일 진로·탐구 성장 시스템 — 공통 탐구 기준
  * 원본: gyeongil-growth-hub/inquiry-standard.js
  * 복사본: career-lab / career-exploration-tool / seteuk-guide 저장소 루트
@@ -6,7 +6,7 @@
  */
 (function () {
   'use strict';
-  var VERSION = '1.4';
+  var VERSION = '1.5';
 
   /* 배포용 GitHub Pages 절대 주소: 저장소 간 이동 시 상대경로 404를 막습니다. */
   var SITES = {
@@ -14,6 +14,7 @@
     lab: 'https://mathlhk15-glitch.github.io/career-lab/',
     explore: 'https://mathlhk15-glitch.github.io/career-exploration-tool/',
     guide: 'https://mathlhk15-glitch.github.io/seteuk-guide/',
+    record: 'https://mathlhk15-glitch.github.io/good-school-record/', // 기록 원칙 문서(단계가 아님, 공통 JS 없음)
     oneQuestion: 'https://chatgpt.com/g/g-6982a6ea81fc8191b3e8975858800ba6-sinmungisaro-tamguhwaldong-saengseong' // 뉴스에서 질문을 시작할 때 사용하는 도구
   };
 
